@@ -7,7 +7,7 @@
 //
 
 #import "FISDataStore.h"
-#import "Message.h"
+#import "Recipient.h"
 
 @implementation FISDataStore
 @synthesize managedObjectContext = _managedObjectContext;
@@ -62,14 +62,14 @@
 
 - (void)fetchData
 {
-    NSFetchRequest *messagesRequest = [NSFetchRequest fetchRequestWithEntityName:@"Message"];
+    NSFetchRequest *recipientsRequest = [NSFetchRequest fetchRequestWithEntityName:@"Recipient"];
 
-    NSSortDescriptor *createdAtSorter = [NSSortDescriptor sortDescriptorWithKey:@"createdAt" ascending:YES];
-    messagesRequest.sortDescriptors = @[createdAtSorter];
+    NSSortDescriptor *nameSorter = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+    recipientsRequest.sortDescriptors = @[nameSorter];
 
-    self.messages = [self.managedObjectContext executeFetchRequest:messagesRequest error:nil];
+    self.recipients = [self.managedObjectContext executeFetchRequest:recipientsRequest error:nil];
 
-    if ([self.messages count]==0) {
+    if ([self.recipients count] == 0) {
         [self generateTestData];
     }
 }
@@ -105,6 +105,15 @@
     
     messageThree.content = @"Message 3";
     messageThree.createdAt = [NSDate date];
+    
+    Recipient *recipient1 = [NSEntityDescription insertNewObjectForEntityForName:@"Recipient" inManagedObjectContext:self.managedObjectContext];
+    recipient1.name = @"Jason Klondike";
+    [recipient1 addMessagesObject:messageOne];
+    
+    Recipient *recipient2 = [NSEntityDescription insertNewObjectForEntityForName:@"Recipient" inManagedObjectContext:self.managedObjectContext];
+    recipient2.name = @"Gracelyn Skye";
+    [recipient2 addMessages:[NSSet setWithArray:@[messageTwo, messageThree]]];
+    
     
     [self saveContext];
     [self fetchData];

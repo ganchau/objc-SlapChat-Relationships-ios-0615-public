@@ -15,39 +15,6 @@
 
 @implementation FISTableViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    self.store = [FISDataStore sharedDataStore];
-
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self.store fetchData];
-    [self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -59,19 +26,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.store.messages count];
+    return self.messages.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"basiccell" forIndexPath:indexPath];
-    
-    Message *eachMessage = self.store.messages[indexPath.row];
-    
-    cell.textLabel.text = eachMessage.content;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"messageCell" forIndexPath:indexPath];
     
     // Configure the cell...
+    Message *eachMessage = self.messages[indexPath.row];
+    cell.textLabel.text = eachMessage.content;
     
     return cell;
 }

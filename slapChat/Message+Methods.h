@@ -1,5 +1,5 @@
 //
-//  Message.m
+//  Message+Methods.h
 //  slapChat
 //
 //  Created by Gan Chau on 6/28/15.
@@ -7,13 +7,9 @@
 //
 
 #import "Message.h"
-#import "Recipient.h"
 
+@interface Message (Methods)
 
-@implementation Message
-
-@dynamic content;
-@dynamic createdAt;
-@dynamic recipient;
++(instancetype) messageWithContext:(NSManagedObjectContext *)context;
 
 @end
